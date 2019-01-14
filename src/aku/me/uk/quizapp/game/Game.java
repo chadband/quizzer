@@ -30,7 +30,7 @@ public class Game {
     {
         int i = 0;
         for (Round round : rounds) {
-            i += round.getNumberQuestions();
+            i += round.getTotalQuestions();
         }
         return i;
     }

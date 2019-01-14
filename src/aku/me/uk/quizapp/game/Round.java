@@ -1,30 +1,30 @@
 package aku.me.uk.quizapp.game;
 
+import aku.me.uk.quizapp.events.RoundListener;
 import aku.me.uk.quizapp.exception.GameSettingsException;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Round {
-    private int numberQuestions;
-    private int currentQuestion;
-    private List<Team> teams;
+    private int totalQuestions;
+    private int currentQuestion = 0;
+    private List<RoundListener> listeners;
 
-    String rules;
-
-    public Round(int numberQuestions) {
-        if (numberQuestions <= 0) {
+    public Round(int totalQuestions) {
+        if (totalQuestions <= 0) {
             throw new GameSettingsException("A round must have one or more questions");
         }
-        this.numberQuestions = numberQuestions;
-        currentQuestion = 1;
+        this.listeners = new LinkedList<RoundListener>();
+        this.totalQuestions = totalQuestions;
     }
 
-    public int getNumberQuestions() {
-        return numberQuestions;
+    public void addRoundListener(RoundListener listener) {
+        this.listeners.add(listener);
     }
 
-    public void setNumberQuestions(int numberQuestions) {
-        this.numberQuestions = numberQuestions;
+    public int getTotalQuestions() {
+        return totalQuestions;
     }
 
     public int getCurrentQuestion() {
@@ -32,7 +32,18 @@ public class Round {
     }
 
     public boolean nextQuestion() {
-        if (currentQuestion >= numberQuestions) {
+        if (currentQuestion == 0) {
+            currentQuestion = 1;
+            for(RoundListener listener : listeners) {
+                listener.roundStarted();
+            }
+            return true;
+        }
+
+        if(currentQuestion == totalQuestions) {
+            for(RoundListener listener : listeners) {
+                listener.roundEnded();
+            }
             return false;
         }
 
