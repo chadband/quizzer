@@ -1,6 +1,7 @@
 package aku.me.uk.quizapp.game;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -27,7 +28,7 @@ public class QuestionsTest {
         assertEquals(1, q.getCurrentQuestionNumber());
     }
 
-    @Test
+    @Test @Ignore
     public void TestWhenNextQuestionCalledInternalCountProgressesToTheNextQuestion() {
         Team t1 = new Team("home team");
         Team t2 = new Team("away team");
